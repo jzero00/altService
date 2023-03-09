@@ -1,0 +1,259 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- div s -->
+<div class="container">
+    <div class="board2">
+        <div class="navi">
+            <h2>부서관리</h2>
+            <ul>
+                <li><a href="userMngList.do">시스템관리</a></li>
+                <li><a href="codeMngList.do">부서관리</a></li>
+            </ul>
+        </div>
+        <div class="board_inner">
+            <table class="table">
+                <colgroup>
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                </colgroup>
+                <tr>
+                    <th class="text-center">No.</th>
+                    <th class="text-center">부서 영문명</th>
+                    <th class="text-center">부서 한글명</th>
+                    <th class="text-center">부서 설명</th>
+                    <th class="text-center">사용여부</th>
+                </tr>
+            </table>
+            <!-- <table class="sch_table">
+                <colgroup>
+                    <col style="width:140px">
+                    <col style="width:auto">
+                </colgroup>
+                <tr>
+                    <th>사용여부</th>
+                    <td>
+                        <input type="radio" id="useYn" value="Y"> 사용
+                        <input type="radio" id="useYn" value="N">미사용
+                    </td>
+                </tr>
+                <tr>
+                    <th>공통부서</th>
+                    <td>
+                        <input name="sch" id='sch' onkeydown="return enter();" value="${pageMaker.cri.cmmnCode }" type="text" class="inputSearch2">
+                        <button class="btn_sch" onclick="search()">검색</button>
+                        <button class="btn_reset" onclick="reset()">초기화</button>
+                    </td>
+                </tr>
+            </table> -->
+            <!-- <table class="table_list">
+                <colgroup>
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                    <col style="width:auto">
+                </colgroup>
+                <tr>
+                    <th>No.</th>
+                    <th>부서 영문명</th>
+                    <th>부서 한글명</th>
+                    <th>부서 설명</th>
+                    <th>사용여부</th>
+                    <th>등록일시</th>
+                    <th>수정자</th>
+                    <th>수정일시</th>
+                </tr>
+            </table> -->
+            <section class="table_view2">
+            	<form id="frm" method="post">
+                    
+            	</form>
+            </section>
+            <button type="button" class="btn btn-primary" onclick="addRow()">+</button>
+            <button type="button" class="btn btn-primary" onclick="delRow()">-</button>
+            <ul class="dw_bar">
+                    <button id="regBtn" type="button" class="btn btn-primary" onclick="reg()">저장</button>
+                    <button id="modBtn" type="button" class="btn btn-primary" onclick="mod()" style="display: none;">수정</button>
+                    <!-- <a id="regBtn" onclick="reg()">저장</a>
+                    <a id="modBtn" onclick="mod()" style="display: none;">수정</a> -->
+            </ul>
+            <!-- <form id="searchForm" method="post" action="codeMngList.do">
+            	<input type="hidden" name="useYn" value="${pageMaker.cri.useYn }">
+            	<input type="hidden" name="cmmnCode" value="${pageMaker.cri.cmmnCode }">
+            	<input type='hidden' name="page" value="${pageMaker.cri.page }" />
+ 				<input type='hidden' name="keyword" value="${pageMaker.cri.keyword }" />
+            </form> -->
+        </div>
+    </div>
+</div>
+<!-- div e -->
+</body>
+<script>
+
+function search(){
+	let keyword = document.querySelector('input[name=sch]').value;
+	let useYn = document.querySelectorAll('input[id=useYn]:checked').value;
+	
+	let form = document.querySelector('form[id=searchForm]');
+	form.querySelector('input[name=cmmnCode]').value = keyword;
+	form.querySelector('input[name=useYn]').value = keyword;
+	form.submit();
+}
+
+function reset(){
+// 	let form = document.querySelector('form[id=searchForm]');
+// 	let input = form.querySelectorAll('input');
+// 	input.forEach(function(e){
+// 		e.value = '';
+// 	});
+// 	form.submit();
+	location.href='codeMngList.do';
+}
+
+function addRow(){
+	
+	let tbody = document.querySelector('table[class=table] > tbody');
+	if(document.getElementById('modBtn').style.display == 'block'){
+		let oldTr = tbody.querySelectorAll('tr');
+		console.log(oldTr);
+		for(let i = oldTr.length - 1; i > 0; i--){
+			oldTr[i].remove();
+		}		
+	}
+	document.getElementById('regBtn').style.display = 'block';
+	document.getElementById('modBtn').style.display = 'none';
+	
+	console.log(tbody);
+	let index = tbody.querySelectorAll('tr').length;
+	if(index < 10){
+		index = "0" + index;
+	}
+	console.log(index);
+	
+	let html =
+`<td>${index}</td>
+ <td><input type="text" class="form-control" name="[${index}]codeEng"></td>
+ <td><input type="text" class="form-control" name="[${index}]codeKor"></td>
+ <td><input type="text" class="form-control" name="[${index}]codeDc"></td>
+ <td>
+    <label><input type="radio" name="[${index}]useYn" value="Y"> 사용</label>
+ 	<label><input type="radio" name="[${index}]useYn" value="N"> 미사용</label>
+ </td>
+ <td>
+ 	<input type="hidden" name="[${index}]register" value="">                        	
+ </td>
+ <td></td>`
+ 
+	let tr = document.createElement('tr');
+	tr.innerHTML = html;
+	tbody.append(tr);
+}
+
+function delRow(){
+	let table = document.querySelector('table[class=table]');
+	let tr = table.querySelectorAll('tr');
+	let index = tr.length-1; 
+	console.log(tr);
+	if(index > 0){
+		tr[index].remove();		
+	} else {
+		alert('더이상 삭제할 행이 없습니다.');
+	}
+}
+
+function reg(){
+	let form = document.querySelector('form');
+	if(confirm("저장하시겠습니까?") == true){
+		form.setAttribute('action','codeMngReg.do');
+		form.submit();
+	}
+}
+
+function mod(){
+	let form = document.querySelector('form');
+	if(confirm("수정하시겠습니까?") == true){
+		form.setAttribute('action','codeMngMod.do');
+		form.submit();
+	}
+}
+
+function modView(el){
+	document.getElementById('regBtn').style.display = 'none';
+	document.getElementById('modBtn').style.display = 'block';
+	
+	console.log(el);
+	let tbody = document.querySelector('table[class=pm] > tbody');
+	
+	let oldTr = tbody.querySelectorAll('tr');
+	console.log(oldTr);
+	for(let i = oldTr.length - 1; i > 0; i--){
+		oldTr[i].remove();
+	}
+	
+	
+	let code = el.querySelector('td:nth-child(2)').innerHTML;
+	let codeKor = el.querySelector('td:nth-child(3)').innerHTML;
+	let codeDc = el.querySelector('td:nth-child(4)').innerHTML;
+	let sortSeq = el.querySelector('td:nth-child(5)').innerHTML;
+	let useYn = el.querySelector('td:nth-child(6)').innerHTML.trim();
+	let register = el.querySelector('td:nth-child(7)').innerHTML; 
+	let cmmnCode = code.substr(0,code.length-5);
+	
+	console.log("code : " + code);
+	console.log("codeKor : " + codeKor);
+	console.log("codeDc : " + codeDc);
+	console.log("sortSeq : " + sortSeq);
+	console.log("useYn : " + useYn);
+	console.log("cmmnCode : " + cmmnCode)
+	
+	
+	let html = 
+`<td>${code}
+	 <input type="hidden" name="code" value="${code}"></td>
+ <td>${cmmnCode}</td>
+ <td><input type="text" name="codeKor" value="${codeKor}"></td>
+ <td><input type="text" name="codeDc" value="${codeDc}"></td>
+ <td>${sortSeq}</td>`
+if(useYn == '사용'){
+	html +=
+`<td>
+ 	<label><input type="radio" name="useYn" value="Y" checked> 사용</label>
+ 	<label><input type="radio" name="useYn" value="N"> 미사용</label>
+</td>`
+} else {
+	html +=
+`<td>
+ 	<label><input type="radio" name="useYn" value="Y"> 사용</label>
+ 	<label><input type="radio" name="useYn" value="N" checked> 미사용</label>
+</td>`
+	
+}
+ 
+ html += `<td>${register}</td>
+<td>${loginUser.userNm}
+	<input type="hidden" name="updusr" value="${loginUser.userNm}">
+</td>`;
+ 
+// 	console.log(html);
+	let tr = document.createElement('tr');
+	tr.innerHTML = html;
+	tbody.append(tr);
+
+}
+</script>
+
+</html>
